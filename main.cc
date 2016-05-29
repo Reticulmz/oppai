@@ -37,20 +37,19 @@ namespace {
 }
 
 int main(int argc, char* argv[]) {
-	puts("o p p a i | v0.3.1");
-	puts("s     d n | ");
-	puts("u     v s | (looking for");
-	puts("!     a p | cool ascii");
-	puts("      n e | to put here)");
-	puts("      c c | ");
-	puts("      e t | ");
-	puts("      d o | ");
-	puts("        r |\n");
-
 	if (argc < 2) {
+		puts("o p p a i | v0.3.1");
+		puts("s     d n | Ripple version");
+		puts("u     v s | (looking for");
+		puts("!     a p | cool ascii");
+		puts("      n e | to put here)");
+		puts("      c c | ");
+		puts("      e t | ");
+		puts("      d o | ");
+		puts("        r |\n");
 		printf("Usage: %s /path/to/difficulty.osu "
 				"{[acc]%% or [num_100s]x100 [num_50s]x50} +[mods] "
-				"[combo]x [misses]m scorev[scoring_version]\n\n", *argv);
+				"[combo]x [misses]m scorev[scoring_version] [tillerino]\n\n", *argv);
 		puts("acc: the accuracy in percent (example: 99.99%)");
 		puts("num_100s, num_50s: used to specify accuracy in 100 and 50 count");
 		puts("mods: any combination of nomod, nf, ez, hd, hr, dt, ht"
@@ -58,6 +57,7 @@ int main(int argc, char* argv[]) {
 		puts("combo: the highest combo (example: 1337x)");
 		puts("misses: amount of misses (example: 1m)");
 		puts("scoring_version: can only be 1 or 2 (example: scorev2)");
+		puts("tillerino: calculate pp for tillerino acciuracies (100%,99%,98%,95)");
 		puts("\narguments in [square brackets] are optional");
 		puts("(the order of the optional arguments does not matter)");
 
@@ -75,6 +75,7 @@ int main(int argc, char* argv[]) {
 	u32 scoring = 1;
 	u16 c100 = 0, c50 = 0;
 	bool no_percent = false;
+	bool tillerino = false;
 
 	dbgputs("\nparsing arguments");
 	for (int i = 2; i < argc; i++) {
@@ -150,6 +151,12 @@ int main(int argc, char* argv[]) {
 			continue;
 		}
 
+		// tillerino
+		if (!strcmp(a, "tillerino")) {
+			tillerino = true;
+			continue;
+		}
+
 		printf(">%s\n", a);
 		die("Invalid parameter");
 		break;
@@ -163,29 +170,37 @@ int main(int argc, char* argv[]) {
 	print_beatmap();
 	chk();
 
-	printf("\n%s - %s [%s] (%s) %s\n", 
-			b.artist, b.title, b.version, b.creator, mods_str ? mods_str : "");
+	//printf("\n%s - %s [%s] (%s) %s\n", b.artist, b.title, b.version, b.creator, mods_str ? mods_str : "");
 
 	b.apply_mods(mods);
 	chk();
 
-	printf("od%g ar%g cs%g\n", b.od, b.ar, b.cs);
+	/*printf("od%g ar%g cs%g\n", b.od, b.ar, b.cs);
 	printf("%" fu16 "/%" fu16 " combo\n", combo, b.max_combo);
 	printf("%" fu16 " circles, %" fu16 " sliders %" fu16 " spinners\n", 
 			b.num_circles, b.num_sliders, b.num_spinners);
 	printf("%" fu16 "xmiss\n", misses);
-	printf("scorev%" fu32"\n\n", scoring);
+	printf("scorev%" fu32"\n\n", scoring);*/
 
 	f64 aim, speed;
 	f64 stars = d_calc(b, &aim, &speed);
 	chk();
-	printf("\n%g stars\naim stars: %g, speed stars: %g\n", stars, aim, speed);
+	//printf("\n%g stars\naim stars: %g, speed stars: %g\n", stars, aim, speed);
 
-	f64 pp = no_percent ? 
-		pp_calc(aim, speed, b, mods, combo, misses, 0xFFFF, c100, c50, scoring)
-	  : pp_calc_acc(aim, speed, b, acc, mods, combo, misses, scoring);
-	chk();
-	printf("\n%gpp\n", pp);
+	if (!tillerino) {
+		f64 pp = no_percent ?
+			pp_calc(aim, speed, b, mods, combo, misses, 0xFFFF, c100, c50, scoring)
+			: pp_calc_acc(aim, speed, b, acc, mods, combo, misses, scoring);
+		chk();
+		printf("%f\n", pp);
+	} else {
+		f64 accs[4] = { 100, 99, 98, 95 };
+		for (int i = 0; i < 4; i++) {
+			f64 pp = pp_calc_acc(aim, speed, b, accs[i], mods, combo, misses, scoring);
+			chk();
+			printf("%f\n", pp);
+		}
+	}
 
 	return 0;
 }

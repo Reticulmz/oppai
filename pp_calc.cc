@@ -91,7 +91,7 @@ f64 pp_calc(f64 aim, f64 speed, beatmap& b, u32 used_mods,
 
 	// accuracy (not in percentage, ranges between 0 and 1)
 	f64 acc = acc_calc(c300, c100, c50, misses);
-	vbprintf("\naccuracy: %g%%\n", acc * 100.0);
+	//vbprintf("\naccuracy: %g%%\n", acc * 100.0);
 
 	// aim pp ------------------------------------------------------------------
 	f64 aim_value = base_strain(aim);
@@ -152,7 +152,7 @@ f64 pp_calc(f64 aim, f64 speed, beatmap& b, u32 used_mods,
 	aim_value *= acc_bonus;
 	aim_value *= od_bonus;
 
-	vbprintf("aim: %g\n", aim_value);
+	//vbprintf("aim: %g\n", aim_value);
 
 	// speed pp ----------------------------------------------------------------
 	f64 speed_value = base_strain(speed);
@@ -163,7 +163,7 @@ f64 pp_calc(f64 aim, f64 speed, beatmap& b, u32 used_mods,
 	speed_value *= acc_bonus;
 	speed_value *= od_bonus;
 
-	vbprintf("speed: %g\n", speed_value);
+	//vbprintf("speed: %g\n", speed_value);
 
 	// acc pp ------------------------------------------------------------------
 	f64 real_acc = 0.0; // accuracy calculation changes from scorev1 to scorev2
@@ -202,7 +202,7 @@ f64 pp_calc(f64 aim, f64 speed, beatmap& b, u32 used_mods,
 		acc_value *= 1.02;
 	}
 
-	vbprintf("acc: %g\n", acc_value);
+	//vbprintf("acc: %g\n", acc_value);
 
 	// total pp ----------------------------------------------------------------
 	f64 final_multiplier = 1.12;
