@@ -192,13 +192,13 @@ int main(int argc, char* argv[]) {
 			pp_calc(aim, speed, b, mods, combo, misses, 0xFFFF, c100, c50, scoring)
 			: pp_calc_acc(aim, speed, b, acc, mods, combo, misses, scoring);
 		chk();
-		printf("%f\n", pp);
+		printf("%.2f\n", pp);
 	} else {
 		f64 accs[4] = { 100, 99, 98, 95 };
 		for (int i = 0; i < 4; i++) {
 			f64 pp = pp_calc_acc(aim, speed, b, accs[i], mods, combo, misses, scoring);
 			chk();
-			printf("%f\n", pp);
+			printf("%.2f\n", pp);
 		}
 	}
 
