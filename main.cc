@@ -183,7 +183,7 @@ int main(int argc, char* argv[]) {
 	printf("scorev%" fu32"\n\n", scoring);*/
 
 	f64 aim, speed;
-	f64 stars = d_calc(b, &aim, &speed);
+	//f64 stars = d_calc(b, &aim, &speed);
 	chk();
 	//printf("\n%g stars\naim stars: %g, speed stars: %g\n", stars, aim, speed);
 
