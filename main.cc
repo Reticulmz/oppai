@@ -38,7 +38,7 @@ namespace {
 
 int main(int argc, char* argv[]) {
 	if (argc < 2) {
-		puts("o p p a i | v0.3.1");
+		puts("o p p a i | v0.3.2");
 		puts("s     d n | Ripple version");
 		puts("u     v s | (looking for");
 		puts("!     a p | cool ascii");
