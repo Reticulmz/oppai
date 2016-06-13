@@ -38,7 +38,7 @@ namespace {
 
 int main(int argc, char* argv[]) {
 	if (argc < 2) {
-		puts("o p p a i | v0.3.2");
+		puts("o p p a i | v0.3.3");
 		puts("s     d n | Ripple version");
 		puts("u     v s | (looking for");
 		puts("!     a p | cool ascii");
@@ -74,8 +74,8 @@ int main(int argc, char* argv[]) {
 	u16 misses = 0;
 	u32 scoring = 1;
 	u16 c100 = 0, c50 = 0;
-	bool no_percent = false;
 	bool tillerino = false;
+	bool no_percent = true;
 
 	dbgputs("\nparsing arguments");
 	for (int i = 2; i < argc; i++) {
@@ -88,6 +88,7 @@ int main(int argc, char* argv[]) {
 		f64 tmp_acc;
 		if (sscanf(a, "%lf%s", &tmp_acc, suff) == 2 && !strcmp(suff, "%")) {
 			acc = tmp_acc;
+			no_percent = false;
 			continue;
 		}
 
@@ -97,7 +98,6 @@ int main(int argc, char* argv[]) {
 			!strcmp(suff, "x100")) {
 
 			c100 = tmp_c100;
-			no_percent = true;
 			continue;
 		}
 
@@ -105,7 +105,6 @@ int main(int argc, char* argv[]) {
 			!strcmp(suff, "x50")) {
 
 			c50 = tmp_c50;
-			no_percent = true;
 			continue;
 		}
 
