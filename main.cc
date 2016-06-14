@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
 		puts("        r |\n");
 		printf("Usage: %s /path/to/difficulty.osu "
 				"{[acc]%% or [num_100s]x100 [num_50s]x50} +[mods] "
-				"[combo]x [misses]m scorev[scoring_version] [tillerino]\n\n", *argv);
+				"[combo]x [misses]m scorev[scoring_version] [tillerino] [stars]\n\n", *argv);
 		puts("acc: the accuracy in percent (example: 99.99%)");
 		puts("num_100s, num_50s: used to specify accuracy in 100 and 50 count");
 		puts("mods: any combination of nomod, nf, ez, hd, hr, dt, ht"
@@ -58,6 +58,7 @@ int main(int argc, char* argv[]) {
 		puts("misses: amount of misses (example: 1m)");
 		puts("scoring_version: can only be 1 or 2 (example: scorev2)");
 		puts("tillerino: calculate pp for tillerino acciuracies (100%,99%,98%,95)");
+		puts("stars: show star difficulty (last line)");
 		puts("\narguments in [square brackets] are optional");
 		puts("(the order of the optional arguments does not matter)");
 
@@ -75,6 +76,7 @@ int main(int argc, char* argv[]) {
 	u32 scoring = 1;
 	u16 c100 = 0, c50 = 0;
 	bool tillerino = false;
+	bool showStars = false;
 	bool no_percent = true;
 
 	dbgputs("\nparsing arguments");
@@ -155,7 +157,13 @@ int main(int argc, char* argv[]) {
 			tillerino = true;
 			continue;
 		}
-
+		
+		// stars
+		if (!strcmp(a, "stars")) {
+			showStars = true;
+			continue;
+		}
+		
 		printf(">%s\n", a);
 		die("Invalid parameter");
 		break;
@@ -182,7 +190,7 @@ int main(int argc, char* argv[]) {
 	printf("scorev%" fu32"\n\n", scoring);*/
 
 	f64 aim, speed;
-	d_calc(b, &aim, &speed);
+	f64 stars = d_calc(b, &aim, &speed);
 	chk();
 	//printf("\n%g stars\naim stars: %g, speed stars: %g\n", stars, aim, speed);
 
@@ -199,6 +207,10 @@ int main(int argc, char* argv[]) {
 			chk();
 			printf("%.2f\n", pp);
 		}
+	}
+	
+	if (showStars) {
+		printf("%g\n", stars);
 	}
 
 	return 0;
